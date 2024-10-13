@@ -1,12 +1,11 @@
-import { fillUser } from "@/app/reducers/auth";
-import Loading from "@/pages/loading";
-import { pingUser } from "api/auth";
+import { fillUser } from "@/store";
+import Loading from "@/pages/Loading";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { getUser } from "../../api/user";
 
-const RouteGuard = () => {
+const AuthGuard = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [validUser, setValidUser] = useState(false);
@@ -46,7 +45,7 @@ const RouteGuard = () => {
   }, [location.pathname]);
 
   return loading ? (
-    <ServerLoad />
+    <Loading />
   ) : validUser ? (
     <Outlet />
   ) : (
@@ -54,4 +53,4 @@ const RouteGuard = () => {
   );
 };
 
-export default RouteGuard;
+export default AuthGuard;

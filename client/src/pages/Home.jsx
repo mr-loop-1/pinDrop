@@ -6,7 +6,7 @@ function Home() {
   const location = useLocation();
   const user = useSelector((state) => state.auth.userInfo);
 
-  return <></>;
+  return <div></div>;
 }
 
 export default Home;
