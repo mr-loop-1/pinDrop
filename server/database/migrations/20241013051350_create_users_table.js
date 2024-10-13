@@ -9,7 +9,6 @@ exports.up = async function (knex) {
     table.string("password").notNullable();
     table.string("jwt", 1000);
     table.string("gateway");
-    table.tinyint("status").index();
     timestamps(knex, table);
   });
   await knex.raw(onUpdateTrigger("users"));

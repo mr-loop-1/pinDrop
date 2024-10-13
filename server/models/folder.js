@@ -1,4 +1,3 @@
-const { PinataSDK } = require("pinata");
 const { knex } = require("../database");
 
 exports.getFolder = async (inputs) => {

@@ -77,4 +77,10 @@ exports.createUser = async (inputs) => {
   }
 };
 
-exports.updateUser = async (inputs) => {};
+exports.getUser = async (inputs) => {
+  const query = knex("users");
+
+  return await query
+    .where("email", inputs.email)
+    .where("password", inputs.hashedPassword);
+};
