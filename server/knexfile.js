@@ -1,5 +1,5 @@
-const { knexSnakeCaseMappers } = require("objection");
 require("dotenv").config();
+const { knexSnakeCaseMappers } = require("objection");
 
 module.exports = {
   development: {

@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-router.post("/register");
+router.get("/current-user");
 router.post("/login");
 
 module.exports = router;

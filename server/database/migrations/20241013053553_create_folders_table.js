@@ -8,7 +8,6 @@ exports.up = async function (knex) {
     table.string("groupId").notNullable();
     table.string("name").notNullable();
     table.integer("parentId").notNullable().index();
-    // table.boolean("immutable");
     timestamps(knex, table);
     table.unique(["userId", "groupId", "name"]);
   });
