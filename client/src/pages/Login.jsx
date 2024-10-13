@@ -3,8 +3,11 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setUser } from "@/store";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function Login() {
   const { toast } = useToast();
@@ -14,6 +17,7 @@ export default function Login() {
 
   const showToast = (toast, msg) => {
     toast({
+      variant: "destructive",
       title: "Some Error Occured",
       description: msg,
       action: <ToastAction altText="Close">Close</ToastAction>,
@@ -40,30 +44,57 @@ export default function Login() {
     }
   };
   return (
-    <div>
-      <form method="POST" onSubmit={handleSubmit(onSubmit)}>
-        <label>Username</label>
-        <input
-          id="email"
-          type="email"
-          name="email"
-          placeholder="email"
-          {...register("email")}
-          required
-        />
+    <Card className="mx-6 mt-6 pt-6 px-6 h-screen md:mx-14 lg:mx-auto max-auto lg:max-w-2xl">
+      <Card className="pt-6 px-4 flex flex-col">
+        <h2 className="text-center font-semibold text-1xl lg:text-2xl text-gray-800">
+          Login
+        </h2>
+        <form
+          method="POST"
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col"
+        >
+          <label className="mt-5 uppercase text-sm font-semibold">
+            Username
+          </label>
+          <Input
+            id="email"
+            type="email"
+            name="email"
+            minLength={5}
+            maxLength={20}
+            placeholder="email"
+            className="mt-2"
+            {...register("email")}
+            required
+          />
 
-        <label>password</label>
-        <input
-          id="password"
-          type="password"
-          name="password"
-          placeholder="password"
-          {...register("password")}
-          required
-        />
+          <label className="mt-5 uppercase text-sm font-semibold">
+            password
+          </label>
+          <Input
+            id="password"
+            type="password"
+            name="password"
+            minLength={5}
+            maxLength={50}
+            placeholder="password"
+            className="mt-2"
+            {...register("password")}
+            required
+          />
 
-        <button>Register</button>
-      </form>
-    </div>
+          <Button type="submit" className="mt-10">
+            Login
+          </Button>
+
+          <div className="sm:flex sm:flex-wrap mt-8 sm:mb-4 text-sm text-center">
+            <Link to="/register" className="flex-2 underline">
+              Create an Account
+            </Link>
+          </div>
+        </form>
+      </Card>
+    </Card>
   );
 }

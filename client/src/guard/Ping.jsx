@@ -24,14 +24,6 @@ const Ping = () => {
   }, []);
 
   return loading ? <Loading /> : <Outlet />;
-
-  // return loading ? (
-  //   <ServerLoad />
-  // ) : validUser ? (
-  //   <Outlet context={validUser} />
-  // ) : (
-  //   <Navigate to="/login" />
-  // );
 };
 
 export default Ping;

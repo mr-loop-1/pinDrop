@@ -1,9 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
-export default function Menu({ data, folderId }) {
+export default function Menu({ data, createFolder, uploadFile }) {
   const navigate = useNavigate();
-  const isRoot = data.path[data.path.length - 1] == "root" ? true : false;
-  const isPinDrop = data.path[data.path.length - 1] == "pinDrop" ? true : false;
+
+  const paths = data.path.split("/");
+
+  const isRoot = paths[paths.length - 1] == "root" ? true : false;
+  const isPinDrop = paths[paths.length - 1] == "pinDrop" ? true : false;
 
   return (
     <div>
@@ -11,16 +14,16 @@ export default function Menu({ data, folderId }) {
         {isRoot && (
           <button
             onClick={() => {
-              navigate(`${data.path[data.path.length - 2]}`);
+              navigate(`${paths[paths.length - 2]}`);
             }}
           >
             Back
           </button>
         )}
 
-        {isPinDrop && <button>Create Folder</button>}
+        {isPinDrop && <button onClick={createFolder}>Create Folder</button>}
 
-        <button>{isPinDrop ? "Drop" : "Add File"}</button>
+        <button onClick={uploadFile}>{isPinDrop ? "Drop" : "Add File"}</button>
       </div>
     </div>
   );

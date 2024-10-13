@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config");
 
-exports.generateToken = async (user) => {
+exports.generateToken = (user) => {
   const payload = {
     id: user.id,
     username: user.username,
   };
-  return await jwt.sign(payload, config.jwt.secret);
+  return jwt.sign(payload, config.jwt.secret);
 };

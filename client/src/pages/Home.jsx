@@ -7,6 +7,7 @@ import { useToast } from "@/components/hooks/use-toast";
 import Menu from "@/components/menu/Menu";
 
 function Home() {
+  const { toast } = useToast();
   const location = useLocation();
   const user = useSelector((state) => state.auth.userInfo);
   const folderId = location.pathname.slice(1);
@@ -16,23 +17,26 @@ function Home() {
 
   const showToast = (toast, msg) => {
     toast({
+      variant: "destructive",
       title: "Some Error Occured",
       description: msg,
       action: <ToastAction altText="Close">Close</ToastAction>,
     });
   };
 
-  useEffect(async () => {
-    try {
-      const response = await getFolder(folderId);
-      if (response.status != 200) {
-        return showToast(toast, response.data.error || response.data.message);
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await getFolder(folderId);
+        if (response.status != 200) {
+          return showToast(toast, response.data.error || response.data.message);
+        }
+        setData(() => response.data);
+        setLoading(() => false);
+      } catch (error) {
+        showToast(toast, error.message);
       }
-      setData(() => response.data);
-      setLoading(() => false);
-    } catch (error) {
-      showToast(toast, error.message);
-    }
+    })();
   }, [refetch]);
 
   const addFolder = async (inputs) => {
@@ -48,13 +52,17 @@ function Home() {
     }
   };
 
+  const createFolder = (inputs) => {};
+
+  const uploadFile = (inputs) => {};
+
   return loading ? (
     <Loading />
   ) : (
     <div>
-      <Header user />
-      <Menu folderId data />
-      <List data />
+      <Header user={user} />
+      <Menu data={data} />
+      <List data={data} />
     </div>
   );
 }

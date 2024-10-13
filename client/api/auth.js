@@ -1,11 +1,12 @@
 import axios from "axios";
-// const API_URL = process.env.API_URL;
+const API_URL = import.meta.env.VITE_SERVER_URL;
 
 export const loginUser = async (inputs) => {
-  //   const result = await axios.post(`${API_URL}/auth/login`, inputs);
-  const result = {
-    status: 201,
-  };
+  console.log("🚀 ~ loginUser ~ inputs:", inputs);
+  const result = await axios.post(`${API_URL}/auth/login`, inputs);
+  //   const result = {
+  //     status: 201,
+  //   };
 
   return result;
 };

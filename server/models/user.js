@@ -91,7 +91,5 @@ exports.createUser = async (inputs) => {
 exports.getUser = async (inputs) => {
   const query = knex("users");
 
-  return await query
-    .where("email", inputs.email)
-    .where("password", inputs.hashedPassword);
+  return await query.where("email", inputs.email).first();
 };

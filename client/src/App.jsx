@@ -4,6 +4,7 @@ import AuthGuard from "./guard/AuthGuard";
 import Ping from "./guard/Ping";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Loading from "./pages/Loading";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route element={<Ping />}>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/loading" element={<Loading />} />
         </Route>
         <Route element={<AuthGuard />}>
           <Route path="/" element={<Home />} />
