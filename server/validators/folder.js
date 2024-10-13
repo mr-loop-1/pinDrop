@@ -1,4 +1,4 @@
-const { body, validationResult } = require("express-validator");
+const { body, param, validationResult } = require("express-validator");
 
 exports.createFolder = [
   body("title")
@@ -7,7 +7,7 @@ exports.createFolder = [
     .isLength({ min: 1, max: 20 })
     .withMessage("Title must be between 1 and 20 characters"),
 
-  body("folderId")
+  param("folderId")
     .isAlphanumeric()
     .withMessage("Folder ulid must be alphanumeric"),
 
