@@ -54,9 +54,7 @@ export default function Login() {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col"
         >
-          <label className="mt-5 uppercase text-sm font-semibold">
-            Username
-          </label>
+          <label className="mt-5 uppercase text-sm font-semibold">Email*</label>
           <Input
             id="email"
             type="email"
@@ -70,7 +68,7 @@ export default function Login() {
           />
 
           <label className="mt-5 uppercase text-sm font-semibold">
-            password
+            password*
           </label>
           <Input
             id="password"

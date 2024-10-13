@@ -11,6 +11,16 @@ export const loginUser = async (inputs) => {
   return result;
 };
 
+export const registerUser = async (inputs) => {
+  console.log("🚀 ~ loginUser ~ inputs:", inputs);
+  const result = await axios.post(`${API_URL}/auth/register`, inputs);
+  //   const result = {
+  //     status: 201,
+  //   };
+
+  return result;
+};
+
 export const pingServer = async () => {
   //   const result = await axios.get(`${API_URL}`);
 

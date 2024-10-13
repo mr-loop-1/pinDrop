@@ -5,6 +5,7 @@ import Loading from "./Loading";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/hooks/use-toast";
 import Menu from "@/components/menu/Menu";
+import { Card } from "@/components/ui/card";
 
 function Home() {
   const { toast } = useToast();
@@ -59,11 +60,11 @@ function Home() {
   return loading ? (
     <Loading />
   ) : (
-    <div>
+    <Card className="mx-6 mt-6 pt-6 px-6 h-screen md:mx-14 lg:mx-auto max-auto lg:max-w-2xl">
       <Header user={user} />
       <Menu data={data} />
       <List data={data} />
-    </div>
+    </Card>
   );
 }
 
