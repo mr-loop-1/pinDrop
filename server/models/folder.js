@@ -26,7 +26,7 @@ exports.getFolder = async (inputs) => {
 
   const files = await pinata.files.list().group(folder.groupId);
 
-  return { folders, files: files.files };
+  return { folder, folders, files: files.files };
 };
 
 exports.createFolder = async (inputs) => {

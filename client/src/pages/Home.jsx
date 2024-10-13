@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card";
 import Header from "@/components/Header";
 import { getFolder } from "api/folder";
 import List from "@/components/list/List";
+import Menu from "@/components/menu/Menu";
 
 function Home() {
   const { toast } = useToast();
@@ -31,7 +32,9 @@ function Home() {
   useEffect(() => {
     (async () => {
       try {
+        setLoading(() => true);
         const folderId = location.pathname.slice(1);
+        console.log("🚀 ~ folderId:", folderId);
         const response = await getFolder({ folderId });
         console.log("🚀 ~ response:", response);
         if (response.status != 200) {
@@ -43,7 +46,7 @@ function Home() {
         showToast(toast, error.message);
       }
     })();
-  }, [refetch]);
+  }, [refetch, location.pathname]);
 
   const addFolder = async (inputs) => {
     // try {
@@ -71,7 +74,7 @@ function Home() {
   ) : (
     <Card className="mx-6 mt-6 pt-6 px-6 h-screen md:mx-14 lg:mx-auto max-auto lg:max-w-2xl">
       <Header user={user} />
-      {/* <Menu data={data} /> */}
+      <Menu data={data} />
       <List
         data={data}
         downloadFile={downloadFile}
