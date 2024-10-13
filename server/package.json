@@ -7,7 +7,10 @@
     "node": "v20.18.0",
     "npm": "v10.8.2"
   },
-  "scripts": {},
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mr-loop-1/pinDrop.git"

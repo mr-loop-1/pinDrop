@@ -1,12 +1,15 @@
+const { knexSnakeCaseMappers } = require("objection");
+require("dotenv").config();
+
 module.exports = {
   development: {
     client: "mysql2",
     connection: {
-      host: proces.env.DB_HOST,
-      port: proces.env.DB_PORT,
-      user: proces.env.DB_USER,
-      password: proces.env.DB_PASSWORD,
-      database: proces.env.DB_NAME,
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
     },
     migrations: {
       directory: "./database/migrations",
@@ -14,5 +17,6 @@ module.exports = {
     seeds: {
       directory: "./database/seeds",
     },
+    ...knexSnakeCaseMappers(),
   },
 };

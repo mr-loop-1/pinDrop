@@ -1,11 +1,14 @@
+const { knexSnakeCaseMappers } = require("objection");
+
 const knex = require("knex")({
   client: "mysql2",
   connection: {
-    host: proces.env.DB_HOST,
-    port: proces.env.DB_PORT,
-    user: proces.env.DB_USER,
-    password: proces.env.DB_PASSWORD,
-    database: proces.env.DB_NAME,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
   },
+  ...knexSnakeCaseMappers(),
 });
 exports.knex = knex;
