@@ -11,9 +11,9 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("", (req, res) => {
-    res.status(200).json({ message: "Server is live" });
+  res.status(200).json({ message: "Server is live" });
 });
 
 app.listen(process.env.PORT || 5000, () => {
-    console.log("listning...");
+  console.log("listning...");
 });
