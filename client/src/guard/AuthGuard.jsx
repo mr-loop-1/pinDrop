@@ -1,19 +1,12 @@
 import { fillUser } from "@/app/reducers/auth";
-import Sidebar from "@/components/sidebar";
-import ServerLoad from "@/pages/server-load";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import Loading from "@/pages/loading";
 import { pingUser } from "api/auth";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  Navigate,
-  Outlet,
-  useLocation,
-  useOutletContext,
-} from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { getUser } from "../../api/user";
 
 const RouteGuard = () => {
-  // const hasValidJwt = useOutletContext();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [validUser, setValidUser] = useState(false);
@@ -21,31 +14,28 @@ const RouteGuard = () => {
 
   useEffect(() => {
     (async () => {
-      console.log("here");
       try {
         if (localStorage.getItem("token")) {
           const localUser = JSON.parse(localStorage.getItem("user"));
-          if (localUser && localUser.hasOwnProperty("email")) {
-            const pingStatus = await pingUser({ email: localUser.email });
-            if (pingStatus == 200) {
-              dispatch(fillUser(JSON.parse(localStorage.getItem("user"))));
-              setValidUser(() => true);
-              setLoading(() => false);
-            } else {
-              localStorage.removeItem("user");
-              localStorage.removeItem("token");
-              setValidUser(() => false);
-              setLoading(() => false);
+          if (localUser) {
+            setValidUser(() => true);
+            setLoading(() => false);
+
+            const user = await getUser();
+            if (!user) {
+              setValidUser(false);
+            }
+            if (user !== localUser) {
+              dispatch(fillUser(user));
             }
           } else {
-            localStorage.removeItem("user");
-            localStorage.removeItem("token");
-            setValidUser(() => false);
+            const user = await getUser();
+            localStorage.setItem("user", JSON.stringify(user));
+            dispatch(fillUser(user));
+            setValidUser(() => true);
             setLoading(() => false);
           }
         } else {
-          localStorage.removeItem("user");
-          setValidUser(() => false);
           setLoading(() => false);
         }
       } catch (err) {

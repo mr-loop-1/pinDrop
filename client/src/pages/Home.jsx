@@ -1,12 +1,10 @@
 import react, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 function Home() {
   const location = useLocation();
-
-  useEffect(() => {
-    console.log(location.pathname);
-  }, [location.pathname]);
+  const user = useSelector((state) => state.auth.userInfo);
 
   return <></>;
 }
