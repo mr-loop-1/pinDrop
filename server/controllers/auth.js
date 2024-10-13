@@ -1,17 +1,22 @@
 const bcrypt = require("bcryptjs");
 const config = require("../config");
 const jwtService = require("../utils");
+const { userModel, folderModel } = require("../models");
 
 exports.register = async (req, res) => {
-  const body = req.body;
-  const hashedPassword = await bcrypt.hash(
-    body.password,
-    config.bcrypt.saltRounds
-  );
-  // create user
-  const token = await jwtService.generateToken();
+  try {
+    const body = req.body;
+    const hashedPassword = await bcrypt.hash(
+      body.password,
+      config.bcrypt.saltRounds
+    );
+    const inputs = {...body, hashedPassword}
 
-  return res.json(data);
+    const newUser = await userModel.createUser(inputs);
+
+    const token = await jwtService.generateToken();
+    return res.json();
+  } catch (err) {}
 };
 
 exports.login = async (req, res) => {};

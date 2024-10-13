@@ -6,7 +6,7 @@ exports.up = async function (knex) {
     table.string("userId").notNullable();
     table.string("ulid").notNullable().unique().index();
     table.string("groupId").notNullable();
-    table.string("name").notNullable();
+    table.string("title").notNullable();
     table.integer("parentId").notNullable().index();
     timestamps(knex, table);
     table.unique(["userId", "groupId", "name"]);

@@ -7,4 +7,5 @@ module.exports = {
   },
   db: {},
   pinDropName: "pinDrop",
+  rootName: "root"
 };
