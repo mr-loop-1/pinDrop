@@ -9,7 +9,9 @@
   },
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "migrate:up": "npx knex migrate:latest",
+    "migrate:down": "npx knex migrate:rollback --all"
   },
   "repository": {
     "type": "git",

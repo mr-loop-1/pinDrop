@@ -4,53 +4,53 @@ const { PinataSDK } = require("pinata");
 const config = require("../config");
 
 exports.createUser = async (inputs) => {
-  const query = knex.transaction();
-  // const query = knex("users");
+  const query = await knex.transaction();
   const pinata = new PinataSDK({
     pinataJwt: inputs.pinataJwt,
     pinataGateway: inputs.pinataGateway,
   });
+  let rootGroup, pinDropGroup;
 
   try {
     await pinata.testAuthentication();
-  }
-  catch(err) {
+  } catch (err) {
     throw new Error("The api keys are not valid");
   }
 
   try {
     const userId = ulid();
-    query("users").insert({
+    await query("users").insert({
       ulid: userId,
-      name: inputs.name,
       username: inputs.username,
       password: inputs.hashedPassword,
       email: inputs.email,
       jwt: inputs.pinataJwt,
-      gateway: inputs.pinataGateway
+      gateway: inputs.pinataGateway,
     });
 
-    const rootGroup = await pinata.groups.create({
+    rootGroup = await pinata.groups.create({
       name: config.rootName,
       isPublic: true,
     });
+    console.log("🚀 ~ exports.createUser= ~ rootGroup:", rootGroup);
 
     const rootId = ulid();
 
-    query("folders").insert({
+    await query("folders").insert({
       ulid: rootId,
       title: config.rootName,
       userId: userId,
       groupId: rootGroup.id,
-      parentId: 0,
+      // parentId: ,
     });
 
-    const pinDropGroup = await pinata.groups.create({
+    pinDropGroup = await pinata.groups.create({
       name: config.pinDropName,
       isPublic: true,
     });
+    console.log("🚀 ~ exports.createUser= ~ pinDropGroup:", pinDropGroup);
 
-    query("folders").insert({
+    await query("folders").insert({
       ulid: ulid(),
       title: config.pinDropName,
       userId: userId,
@@ -59,15 +59,22 @@ exports.createUser = async (inputs) => {
     });
 
     (await query).commit();
-  }
-  catch(err) {
+
+    return userId;
+  } catch (err) {
     (await query).rollback();
+    if (rootGroup) {
+      await pinata.groups.delete({
+        groupId: rootGroup.id,
+      });
+    }
+    if (pinDropGroup) {
+      await pinata.groups.delete({
+        groupId: pinDropGroup.id,
+      });
+    }
     throw new Error(err.message);
   }
-
-  return;
 };
-
-// this.createUser({pinataJwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI0ODBiZmU1Ny1jMTdjLTRhZjQtOTU5MS1kZWNlN2QwZTdjOTgiLCJlbWFpbCI6ImFiZHVsc2FtYWQxNDEybWVAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjEsImlkIjoiRlJBMSJ9LHsiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjEsImlkIjoiTllDMSJ9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6Ijc3M2U5NGY0ZmU2YTQwNWRhNjQ3Iiwic2NvcGVkS2V5U2VjcmV0IjoiZDUwMzc0ZmFmNzZkMTYyZjEwNThkM2YxZGRjOGM4MWU4OGZmZmIyYWNmYzNiYTA5MDI4Y2RmYmRmMjRjMjA0MyIsImV4cCI6MTc2MDMzNDM2MH0.ZfD3m-AdVm2dacCTFSMfznMqcvib2X5fl_ixEZt9b_4", pinataGateway: "scarlet-useful-limpet-57.mypinata.cloud"})
 
 exports.updateUser = async (inputs) => {};

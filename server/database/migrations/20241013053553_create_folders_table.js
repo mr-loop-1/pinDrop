@@ -7,9 +7,10 @@ exports.up = async function (knex) {
     table.string("ulid").notNullable().unique().index();
     table.string("groupId").notNullable();
     table.string("title").notNullable();
-    table.integer("parentId").notNullable().index();
+    table.string("parentId").nullable().index();
     timestamps(knex, table);
-    table.unique(["userId", "groupId", "name"]);
+    table.unique(["userId", "groupId", "title"]);
+    table.foreign("parentId").references("folders.ulid").onDelete('CASCADE');
   });
   await knex.raw(onUpdateTrigger("folders"));
   return migration;
