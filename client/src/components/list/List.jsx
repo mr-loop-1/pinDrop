@@ -1,16 +1,19 @@
-export default function Menu({ data, downloadFile, deleteFile, deleteFolder }) {
+export default function List({ data, downloadFile, deleteFile, deleteFolder }) {
+  console.log("🚀 ~ List ~ data:", data);
   return (
     <div>
       <ul>
         {data.folders.map((folder) => {
-          <li key={folder.id}>
-            <div>
-              <span>{folder.title}</span>
-              <button onClick={deleteFolder} className="hidden hover:inline">
-                Delete
-              </button>
-            </div>
-          </li>;
+          return (
+            <li key={folder.id}>
+              <div>
+                <span>{folder.title}</span>
+                <button onClick={deleteFolder} className="hidden hover:inline">
+                  Delete
+                </button>
+              </div>
+            </li>
+          );
         })}
         {data.files.map((folder) => {
           <li key={folder.id}>

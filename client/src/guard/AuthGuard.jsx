@@ -17,16 +17,19 @@ const AuthGuard = () => {
         if (localStorage.getItem("token")) {
           const localUser = JSON.parse(localStorage.getItem("user"));
           if (localUser) {
+            dispatch(fillUser(localUser));
             setValidUser(() => true);
             setLoading(() => false);
 
-            const user = await getUser();
-            if (!user) {
-              setValidUser(false);
-            }
-            if (user !== localUser) {
-              dispatch(fillUser(user));
-            }
+            // const user = await getUser();
+            // console.log("🚀 ~ user:", user);
+            // if (!user || !user.id) {
+            //   setValidUser(false);
+            // }
+            // if (user !== localUser) {
+            //   localStorage.setItem("user", JSON.stringify(user));
+            //   dispatch(fillUser(user));
+            // }
           } else {
             const user = await getUser();
             localStorage.setItem("user", JSON.stringify(user));

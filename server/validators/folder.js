@@ -21,9 +21,10 @@ exports.createFolder = [
 ];
 
 exports.getFolder = [
-  body("folderId")
+  param("folderId")
     .isAlphanumeric()
-    .withMessage("Folder ulid must be alphanumeric"),
+    .withMessage("Folder ulid must be alphanumeric")
+    .optional(),
 
   (req, res, next) => {
     const errors = validationResult(req);

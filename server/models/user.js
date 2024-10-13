@@ -77,17 +77,6 @@ exports.createUser = async (inputs) => {
   }
 };
 
-// exports.updateUser = async (inputs) => {
-//   const query = knex("users");
-
-//   const pinata = new PinataSDK({
-//     pinataJwt: inputs.pinataJwt,
-//     pinataGateway: inputs.pinataGateway,
-//   });
-
-//   let rootGroup, pinDropGroup;
-// };
-
 exports.getUser = async (inputs) => {
   const query = knex("users");
 

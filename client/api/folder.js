@@ -1,23 +1,19 @@
 import axios from "axios";
-// const API_URL = process.env.API_URL;
+const API_URL = import.meta.env.VITE_SERVER_URL;
 
 export const getFolder = async (inputs) => {
-  //   const result = await axios.post(`${API_URL}/auth/login`, inputs);
-  const result = {
-    status: 201,
-  };
-
-  return result;
+  console.log("🚀 ~ getFolder ~ inputs:", inputs);
+  const jwt = localStorage.getItem("token");
+  console.log("🚀 ~ getFolder ~ jwt:", jwt);
+  const response = await axios.get(`${API_URL}/folder/${inputs.folderId}`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+  console.log("🚀 ~ getFolder ~ response:", response);
+  return response;
 };
 
-export const pingServer = async () => {
-  //   const result = await axios.get(`${API_URL}`);
+export const createFolder = async (inputs) => {};
 
-  //   if (result.status != 200) {
-  //     return;
-  //   }
-
-  const result = { status: 200 };
-
-  return result.status;
-};
+export const deleteFolder = async (inputs) => {};

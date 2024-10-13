@@ -6,14 +6,21 @@ const { folderController } = require("../controllers");
 const router = express.Router();
 
 router.get(
-  ":ulid",
+  "/:ulid",
   authMiddleware.authenticateToken,
   folderValidator.getFolder,
-  folderController.createFolder
+  folderController.getFolder
+);
+
+router.get(
+  "",
+  authMiddleware.authenticateToken,
+  folderValidator.getFolder,
+  folderController.getFolder
 );
 
 router.post(
-  ":ulid",
+  "/:ulid",
   authMiddleware.authenticateToken,
   folderValidator.createFolder,
   folderController.createFolder

@@ -1,23 +1,32 @@
 const { knex } = require("../database");
 
 exports.getFolder = async (inputs) => {
+  console.log("🚀 ~ exports.getFolder= ~ inputs:", inputs);
   const pinata = inputs.pinata;
-
-  const folder = await knex("folders")
-    .where("ulid", inputs.folderId)
-    .where("userId", inputs.user.id);
-
+  let folder;
+  if (!inputs?.folderId) {
+    console.log("🚀 ~ exports.getFolder= ~ folderId:");
+    folder = await knex("folders")
+      .where("userId", inputs.user.ulid)
+      .whereNull("parentId")
+      .first();
+  } else {
+    folder = await knex("folders")
+      .where("ulid", inputs.folderId)
+      .where("userId", inputs.user.ulid)
+      .first();
+  }
   if (!folder) {
     throw new Error("Folder not found");
   }
 
   const folders = await knex("folders")
-    .where("parentId", inputs.folderId)
-    .where("userId", inputs.user.id);
+    .where("parentId", folder.ulid)
+    .where("userId", inputs.user.ulid);
 
   const files = await pinata.files.list().group(folder.groupId);
 
-  return { folders, files };
+  return { folders, files: files.files };
 };
 
 exports.createFolder = async (inputs) => {

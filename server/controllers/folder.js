@@ -1,16 +1,22 @@
 const { folderModel } = require("../models");
 
 exports.getFolder = async (req, res) => {
+  console.log("🚀 ~ exports.getFolder= ~ req:", req.params);
   try {
     const data = await folderModel.getFolder({
       folderId: req.params.folderId,
       user: req.user,
+      pinata: req.pinata,
     });
+    console.log("🚀 ~ exports.getFolder= ~ data:", data);
     res.status(200).json({
       folders: trimFolders(data.folders),
       files: trimFiles(data.files),
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log("🚀 ~ exports.login= ~ err:", error);
+    res.status(500).json({ error: `Login Error - ${error.message}` });
+  }
 };
 
 exports.createFolder = async (req, res) => {

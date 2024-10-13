@@ -3,8 +3,9 @@ const config = require("../config");
 
 exports.generateToken = (user) => {
   const payload = {
-    id: user.id,
+    id: user.ulid,
     username: user.username,
+    email: user.email,
   };
   return jwt.sign(payload, config.jwt.secret);
 };
