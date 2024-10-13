@@ -1,0 +1,20 @@
+{
+  "name": "pinata-filesystem-and-pindrop",
+  "version": "1.0.0",
+  "description": "server for pinata-filesystem and pindrop",
+  "main": "app.js",
+  "engines": {
+    "node": "v20.18.0",
+    "npm": "v10.8.2"
+  },
+  "scripts": {
+    
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mr-loop-1/pinDrop.git"
+  },
+  "author": "Abdul Samad",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/mr-loop-1/pinDrop#readme"
+}
