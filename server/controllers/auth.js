@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const config = require("../config");
 const jwtService = require("../utils");
-const { userModel, folderModel } = require("../models");
+const { userModel } = require("../models");
 
 exports.register = async (req, res) => {
   try {
