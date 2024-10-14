@@ -52,9 +52,10 @@ exports.createFolder = async (inputs) => {
       userId: inputs.user.ulid,
       groupId: folderGroup.id,
       parentId: inputs?.folderId || parent.ulid,
-      path: inputs?.folderId
-        ? `${inputs.folderPath}/${inputs.title}`
-        : `/${inputs.title}`,
+      path:
+        inputs?.folderPath != "/"
+          ? `${inputs.folderPath}/${inputs.title}`
+          : `/${inputs.title}`,
     });
   } catch (error) {
     if (folderGroup) {

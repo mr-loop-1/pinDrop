@@ -2,7 +2,7 @@ require("dotenv").config();
 const { knexSnakeCaseMappers } = require("objection");
 
 module.exports = {
-  development: {
+  production: {
     client: "mysql2",
     connection: {
       host: process.env.DB_HOST,
