@@ -1,4 +1,5 @@
 const multer = require("multer");
+const path = require("path");
 
 const storage = multer.memoryStorage(); // Ensure storage is defined before usage
 const upload = multer({

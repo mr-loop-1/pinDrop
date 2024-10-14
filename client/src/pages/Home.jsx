@@ -10,6 +10,7 @@ import Header from "@/components/Header";
 import { createFolder, deleteFolder, getFolder } from "api/folder";
 import List from "@/components/list/List";
 import Menu from "@/components/menu/Menu";
+import { uploadFile } from "api/file";
 
 function Home() {
   const { toast } = useToast();
@@ -47,14 +48,12 @@ function Home() {
   }, [refetch, location.pathname]);
 
   const handleCreateFolder = async (inputs) => {
-    console.log("🚀 ~ handleCreateFolder ~ inputs:", inputs);
     try {
       const folderId = location.pathname.slice(1);
       const response = await createFolder({
         folderId,
         title: inputs.title,
       });
-      console.log("🚀 ~ handleCreateFolder ~ response:", response);
       if (response.status != 200) {
         return showToast(toast, response.data.error || response.data.message);
       }
@@ -63,10 +62,41 @@ function Home() {
       showToast(toast, error.message);
     }
   };
-  const uploadFile = (inputs) => {};
+  const handleUploadFile = async (input) => {
+    try {
+      if (input.size > 10 * 1024 * 1024) {
+        throw Error("File exceeds 10 mb limit");
+      }
+      const folderId = location.pathname.slice(1);
+      const response = await uploadFile({
+        file: input,
+        folderId,
+      });
+      console.log("🚀 ~ handleUploadFile ~ response:", response);
+      if (response.status != 200) {
+        return showToast(toast, response.data.error || response.data.message);
+      }
+      toggleRefetch(() => (refetch ? false : true));
+    } catch (error) {
+      showToast(toast, error.message);
+    }
+  };
 
   const downloadFile = (inputs) => {};
-  const deleteFile = (inputs) => {};
+
+  const deleteFile = async (inputs) => {
+    try {
+      const response = await deleteFile({
+        fileId: inputs.id,
+      });
+      if (response.status != 200) {
+        return showToast(toast, response.data.error || response.data.message);
+      }
+      toggleRefetch(() => (refetch ? false : true));
+    } catch (error) {
+      showToast(toast, error.message);
+    }
+  };
   const handleDeleteFolder = async (inputs) => {
     try {
       const response = await deleteFolder({
@@ -86,7 +116,11 @@ function Home() {
   ) : (
     <Card className="mx-6 mt-6 pt-6 px-6 h-screen md:mx-14 lg:mx-auto max-auto lg:max-w-2xl">
       <Header user={user} />
-      <Menu data={data} handleCreateFolder={handleCreateFolder} />
+      <Menu
+        data={data}
+        handleCreateFolder={handleCreateFolder}
+        handleUploadFile={handleUploadFile}
+      />
       <List
         data={data}
         downloadFile={downloadFile}

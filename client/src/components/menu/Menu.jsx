@@ -15,9 +15,10 @@ import { Input } from "../ui/input";
 
 export default function Menu({ data, handleCreateFolder, handleUploadFile }) {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { register, handleSubmit } = useForm();
+  const { register: registerFile, handleSubmit: handleSubmitFile } = useForm();
   const [open, setOpen] = useState(false);
+  const [openFile, setOpenFile] = useState(false);
 
   //   const paths = data.path.split("/");
 
@@ -29,6 +30,11 @@ export default function Menu({ data, handleCreateFolder, handleUploadFile }) {
   const onSubmit = async (inputs) => {
     await handleCreateFolder(inputs);
     setOpen(() => false);
+  };
+
+  const onSubmitFile = async (inputs) => {
+    await handleUploadFile(inputs.file[0]);
+    setOpenFile(() => false);
   };
 
   return (
@@ -68,20 +74,34 @@ export default function Menu({ data, handleCreateFolder, handleUploadFile }) {
                     required
                   ></Input>
                   <DialogFooter>
-                    <button type="submit">Add folder</button>
+                    <Button type="submit">Add folder</Button>
                   </DialogFooter>
                 </form>
               </DialogContent>
             </Dialog>
           )}
-
-          <Button
-            variant="outline"
-            className="bg-sky-400"
-            onClick={handleUploadFile}
-          >
-            {isPinDrop ? "Drop" : "Add File"}
-          </Button>
+          <Dialog open={openFile} onOpenChange={setOpenFile}>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="bg-sky-400">
+                {isPinDrop ? "Drop" : "Add File"}
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <form method="POST" onSubmit={handleSubmitFile(onSubmitFile)}>
+                <label for="title">Select a file</label>
+                <Input
+                  id="file"
+                  type="file"
+                  name="file"
+                  {...registerFile("file")}
+                  required
+                ></Input>
+                <DialogFooter>
+                  <Button type="submit">Add selected file</Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 

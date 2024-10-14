@@ -4,7 +4,7 @@ import clsx from "clsx";
 
 export default function List({
   data,
-  downloadFile,
+  handleDownloadFile,
   handleDeleteFile,
   handleDeleteFolder,
 }) {
@@ -52,7 +52,7 @@ export default function List({
                   <TableCell className="w-fit text-right">Down</TableCell>
                   <TableCell
                     onClick={() => handleDeleteFile(file.id)}
-                    className="w-fit text-right hover:underline"
+                    className="w-fit text-right hover:underline cursor-pointer"
                   >
                     Del
                   </TableCell>
