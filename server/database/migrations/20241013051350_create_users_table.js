@@ -7,7 +7,7 @@ exports.up = async function (knex) {
     table.string("username").notNullable().unique();
     table.string("email").notNullable().unique();
     table.string("password").notNullable();
-    table.string("jwt", 1000);
+    table.string("jwt", 2000);
     table.string("gateway");
     timestamps(knex, table);
   });

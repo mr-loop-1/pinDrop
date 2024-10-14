@@ -57,9 +57,7 @@ export default function Register() {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col"
         >
-          <label className="mt-5 uppercase text-sm font-semibold">
-            Username*
-          </label>
+          <label className="mt-5 uppercase text-sm font-semibold">Email*</label>
           <Input
             id="email"
             type="email"
@@ -72,7 +70,9 @@ export default function Register() {
             required
           />
 
-          <label className="mt-5 uppercase text-sm font-semibold">Email*</label>
+          <label className="mt-5 uppercase text-sm font-semibold">
+            Username*
+          </label>
           <Input
             id="username"
             type="text"

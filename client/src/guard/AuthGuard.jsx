@@ -16,7 +16,7 @@ const AuthGuard = () => {
       try {
         if (localStorage.getItem("token")) {
           const localUser = JSON.parse(localStorage.getItem("user"));
-          if (localUser) {
+          if (localUser && localUser.ulid && localUser.email) {
             dispatch(fillUser(localUser));
             setValidUser(() => true);
             setLoading(() => false);
@@ -32,6 +32,7 @@ const AuthGuard = () => {
             // }
           } else {
             const user = await getUser();
+            console.log("🚀 ~ user:", user);
             localStorage.setItem("user", JSON.stringify(user));
             dispatch(fillUser(user));
             setValidUser(() => true);

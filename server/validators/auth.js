@@ -2,8 +2,8 @@ const { body, validationResult } = require("express-validator");
 
 exports.validateRegister = [
   body("username")
-    .isAlpha()
-    .withMessage("Username must contain only alphabetic characters")
+    .isAlphanumeric()
+    .withMessage("Username must contain only alphanumeric characters")
     .isLength({ min: 5, max: 20 })
     .withMessage("Username must be between 5 and 20 characters"),
 
@@ -11,10 +11,7 @@ exports.validateRegister = [
 
   body("password")
     .isLength({ min: 5, max: 50 })
-    .withMessage("Password must be between 5 and 50 characters")
-    .matches(/^[\w\W]{5,50}$/)
-    .withMessage("Password must contain alphanumeric and special characters"),
-
+    .withMessage("Password must be between 5 and 50 characters"),
   body("pinataJwt")
     .isString()
     .withMessage("Jwt must be a string")

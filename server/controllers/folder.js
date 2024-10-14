@@ -24,6 +24,7 @@ exports.createFolder = async (req, res) => {
     await folderModel.createFolder({
       title: req.body.title,
       folderId: req.params.ulid,
+      folderPath: req.body.folderPath,
       user: req.user,
       pinata: req.pinata,
     });
@@ -65,4 +66,6 @@ const trimFiles = (files) =>
 const trimFolder = (folder) => ({
   id: folder.ulid,
   parentId: folder.parentId,
+  title: folder.title,
+  path: folder.path,
 });

@@ -11,7 +11,12 @@ exports.register = async (req, res) => {
       config.bcrypt.saltRounds
     );
     const inputs = { ...body, hashedPassword };
-    const newUser = await userModel.createUser(inputs);
+    const userUlid = await userModel.createUser(inputs);
+    const newUser = {
+      ulid: userUlid,
+      username: inputs.username,
+      email: inputs.email,
+    };
     const token = jwtService.generateToken(newUser);
     return res.status(200).json({ user: trimUser(newUser), token });
   } catch (error) {

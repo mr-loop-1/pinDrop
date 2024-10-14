@@ -22,9 +22,9 @@ export default function Menu({ data, handleCreateFolder, handleUploadFile }) {
 
   //   const paths = data.path.split("/");
 
-  //   const isRoot = paths[paths.length - 1] == "root" ? true : false;
+  const isRoot = data.folder.title == "root" ? true : false;
   //   const isPinDrop = paths[paths.length - 1] == "pinDrop" ? true : false;
-  const isRoot = false;
+  //   const isRoot = false;
   const isPinDrop = false;
 
   const onSubmit = async (inputs) => {
@@ -43,7 +43,6 @@ export default function Menu({ data, handleCreateFolder, handleUploadFile }) {
         <div>
           {!isRoot && (
             <button
-              disabled={isRoot}
               onClick={() => {
                 navigate(`/${data.folder.parentId}`);
               }}
@@ -107,7 +106,7 @@ export default function Menu({ data, handleCreateFolder, handleUploadFile }) {
         </div>
       </div>
 
-      <Label>mount: ~/</Label>
+      <Label>mount: ~{data.folder.path}</Label>
     </div>
   );
 }

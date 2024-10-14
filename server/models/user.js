@@ -4,6 +4,7 @@ const { PinataSDK } = require("pinata");
 const config = require("../config");
 
 exports.createUser = async (inputs) => {
+  console.log("🚀 ~ exports.createUser= ~ inputs:", inputs);
   const query = await knex.transaction();
   const pinata = new PinataSDK({
     pinataJwt: inputs.pinataJwt,
@@ -16,7 +17,6 @@ exports.createUser = async (inputs) => {
   } catch (err) {
     throw new Error("The api keys are not valid");
   }
-
   try {
     const userId = ulid();
     await query("users").insert({
@@ -29,7 +29,7 @@ exports.createUser = async (inputs) => {
     });
 
     rootGroup = await pinata.groups.create({
-      name: config.rootName,
+      name: ulid(),
       isPublic: true,
     });
 
@@ -40,10 +40,11 @@ exports.createUser = async (inputs) => {
       title: config.rootName,
       userId: userId,
       groupId: rootGroup.id,
+      path: "/",
     });
 
     pinDropGroup = await pinata.groups.create({
-      name: config.pinDropName,
+      name: ulid(),
       isPublic: true,
     });
 
@@ -53,12 +54,14 @@ exports.createUser = async (inputs) => {
       userId: userId,
       groupId: pinDropGroup.id,
       parentId: rootId,
+      path: "/pinDrop",
     });
 
     await query.commit();
 
     return userId;
   } catch (err) {
+    console.log("🚀 ~ exports.createUser= ~ err:", err);
     await query.rollback();
     if (rootGroup) {
       await pinata.groups.delete({

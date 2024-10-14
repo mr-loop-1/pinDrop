@@ -8,7 +8,7 @@ exports.up = async function (knex) {
     table.string("groupId").notNullable();
     table.string("title").notNullable();
     table.string("parentId").nullable().index();
-    table.string("path");
+    table.string("path", 200).nullable();
     timestamps(knex, table);
     table.unique(["userId", "groupId", "title"]);
     table.foreign("parentId").references("folders.ulid").onDelete("CASCADE");

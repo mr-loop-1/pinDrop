@@ -52,6 +52,7 @@ function Home() {
       const folderId = location.pathname.slice(1);
       const response = await createFolder({
         folderId,
+        folderPath: data.folder.path,
         title: inputs.title,
       });
       if (response.status != 200) {
