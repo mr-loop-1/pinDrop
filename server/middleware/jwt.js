@@ -11,7 +11,6 @@ exports.authenticateToken = (req, res, next) => {
   }
 
   jwt.verify(token.slice(7), config.jwt.secret, async (err, payload) => {
-    console.log("🚀 ~ jwt.verify ~ payload:", payload);
     if (err) {
       return res.status(401).json({ error: "Unauthorized - Invalid token" });
     }
@@ -28,7 +27,6 @@ exports.authenticateToken = (req, res, next) => {
       req.user = user;
       next();
     } catch (err) {
-      console.log("🚀 ~ jwt.verify ~ err:", err);
       return res.status(500).json({ error: "Server Error" });
     }
   });

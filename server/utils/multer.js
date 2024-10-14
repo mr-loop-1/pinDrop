@@ -5,14 +5,11 @@ const storage = multer.memoryStorage(); // Ensure storage is defined before usag
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png|gif|pdf|docx|txt|csv/;
+    const filetypes =
+      /jpeg|jpg|png|webp|gif|mp4|pdf|doc|docx|txt|text|md|zip|js|jsx|csv|svg/;
     const mimetype = filetypes.test(file.mimetype);
     const extname = filetypes.test(
       path.extname(file.originalname).toLowerCase()
-    );
-
-    console.log(
-      `MIME Type: ${file.mimetype}, Original Name: ${file.originalname}, Mimetype Valid: ${mimetype}, Extname Valid: ${extname}`
     );
 
     if (mimetype || extname) {

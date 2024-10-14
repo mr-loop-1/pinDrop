@@ -19,14 +19,19 @@ exports.createUser = async (inputs) => {
   }
   try {
     const userId = ulid();
-    await query("users").insert({
-      ulid: userId,
-      username: inputs.username,
-      password: inputs.hashedPassword,
-      email: inputs.email,
-      jwt: inputs.pinataJwt,
-      gateway: inputs.pinataGateway,
-    });
+
+    try {
+      await query("users").insert({
+        ulid: userId,
+        // username: inputs.username,
+        password: inputs.hashedPassword,
+        email: inputs.email,
+        jwt: inputs.pinataJwt,
+        gateway: inputs.pinataGateway,
+      });
+    } catch (error) {
+      throw new Error("Email already exists or db is down error");
+    }
 
     rootGroup = await pinata.groups.create({
       name: ulid(),
@@ -61,7 +66,6 @@ exports.createUser = async (inputs) => {
 
     return userId;
   } catch (err) {
-    console.log("🚀 ~ exports.createUser= ~ err:", err);
     await query.rollback();
     if (rootGroup) {
       await pinata.groups.delete({

@@ -2,6 +2,15 @@ import { Link } from "react-router-dom";
 import { Table, TableBody, TableCell, TableRow } from "../ui/table";
 import clsx from "clsx";
 import { mapIcon } from "@/lib/mapIcons";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogTrigger,
+} from "../ui/dialog";
+import { Button } from "../ui/button";
+import { useState } from "react";
+import { LoadingSpinner } from "../ui/Spinner";
 
 export default function List({
   data,
@@ -9,6 +18,23 @@ export default function List({
   handleDeleteFile,
   handleDeleteFolder,
 }) {
+  const [openFolder, setOpenFolder] = useState(false);
+  const [openFile, setOpenFile] = useState(false);
+
+  const [deletingFolder, setDeletingFolder] = useState(false);
+  const [deletingFile, setDeletingFile] = useState(false);
+
+  const onDeleteFolder = async (inputs) => {
+    setDeletingFolder(() => true);
+    await handleDeleteFolder(inputs);
+    setDeletingFolder(() => false);
+  };
+  const onDeleteFile = async (inputs) => {
+    setDeletingFile(() => true);
+    await handleDeleteFile(inputs);
+    setDeletingFile(() => false);
+  };
+
   return (
     <div>
       <Table>
@@ -24,20 +50,37 @@ export default function List({
               >
                 <Link to={`/${folder.id}`} className="flex-grow">
                   <TableCell className="w-16">
-                    <img className="w-6 mr-5" src="/folder.png" alt="asdew" />
+                    <img className="w-6 mr-5" src="/folder.svg" alt="asdew" />
                   </TableCell>
                   <TableCell className="w-full">{folder.title}</TableCell>
                 </Link>
                 <span>
-                  {/* <TableCell className="w-fit text-right"></TableCell> */}
                   <TableCell
-                    onClick={() => handleDeleteFolder({ id: folder.id })}
                     className={clsx(
                       folder.title == "pinDrop" && "hidden",
                       "w-fit text-right hover:underline cursor-pointer"
                     )}
                   >
-                    <img src="/delete.svg" className="w-5" />
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <img src="/delete.svg" className="w-5" />
+                      </DialogTrigger>
+                      <DialogContent>
+                        <label>
+                          Are you sure you want to delete this folder?
+                          {deletingFolder && (
+                            <LoadingSpinner className="inline ml-2" />
+                          )}
+                        </label>
+                        <Button
+                          variant="destructive"
+                          onClick={() => onDeleteFolder({ id: folder.id })}
+                          disabled={deletingFolder}
+                        >
+                          Delete
+                        </Button>
+                      </DialogContent>
+                    </Dialog>
                   </TableCell>
                 </span>
               </TableRow>
@@ -52,7 +95,7 @@ export default function List({
                       className="w-6 mr-5"
                       src={`/${mapIcon(
                         file.name.split(".")[file.name.split(".").length - 1]
-                      )}.png`}
+                      )}.svg`}
                     />
                   </TableCell>
                   <TableCell className="w-full">{file.name}</TableCell>
@@ -61,11 +104,27 @@ export default function List({
                   <TableCell className="w-fit text-right">
                     <img src="/download.svg" className="w-5" />
                   </TableCell>
-                  <TableCell
-                    onClick={() => handleDeleteFile({ id: file.id })}
-                    className="w-fit text-right hover:underline cursor-pointer"
-                  >
-                    <img src="/delete.svg" className="w-5" />
+                  <TableCell className="w-fit text-right hover:underline cursor-pointer">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <img src="/delete.svg" className="w-5" />
+                      </DialogTrigger>
+                      <DialogContent>
+                        <label>
+                          Are you sure you want to delete this file?
+                          {deletingFile && (
+                            <LoadingSpinner className="inline ml-2" />
+                          )}
+                        </label>
+                        <Button
+                          variant="destructive"
+                          onClick={() => onDeleteFile({ id: file.id })}
+                          disabled={deletingFile}
+                        >
+                          Delete
+                        </Button>
+                      </DialogContent>
+                    </Dialog>
                   </TableCell>
                 </span>
               </TableRow>

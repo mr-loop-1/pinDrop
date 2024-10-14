@@ -9,7 +9,15 @@ const router = express.Router();
 router.post(
   "/upload",
   authMiddleware.authenticateToken,
-  upload.single("file"),
+  (req, res, next) => {
+    upload.single("file")(req, res, (err) => {
+      if (err) {
+        return res.status(400).json({ error: err.message });
+      }
+      next();
+    });
+  },
+  // upload.single("file"),
   fileController.uploadFile
 );
 // router.post(

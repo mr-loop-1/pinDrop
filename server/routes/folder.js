@@ -15,7 +15,7 @@ router.get(
 router.get(
   "",
   authMiddleware.authenticateToken,
-  folderValidator.getFolder,
+  // folderValidator.getFolder,
   folderController.getFolder
 );
 
@@ -36,7 +36,7 @@ router.post(
 router.delete(
   "/:ulid",
   authMiddleware.authenticateToken,
-  folderValidator.deleteFolder,
+  // folderValidator.deleteFolder,
   folderController.deleteFolder
 );
 

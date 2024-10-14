@@ -40,7 +40,7 @@ export default function Login() {
       localStorage.setItem("user", JSON.stringify(result.data.user));
       navigate("/");
     } catch (error) {
-      showToast(toast, error.message);
+      showToast(toast, error?.response?.data?.error || error.message);
     }
   };
   return (

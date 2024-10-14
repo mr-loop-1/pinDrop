@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { useToast } from "../hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
+import { LoadingSpinner } from "../ui/Spinner";
 
 export default function Menu({ data, handleCreateFolder, handleUploadFile }) {
   const navigate = useNavigate();
@@ -20,20 +21,27 @@ export default function Menu({ data, handleCreateFolder, handleUploadFile }) {
   const [open, setOpen] = useState(false);
   const [openFile, setOpenFile] = useState(false);
 
+  const [uploading, setUploading] = useState(false);
+  const [adding, setAdding] = useState(false);
+
   //   const paths = data.path.split("/");
 
   const isRoot = data.folder.title == "root" ? true : false;
   //   const isPinDrop = paths[paths.length - 1] == "pinDrop" ? true : false;
   //   const isRoot = false;
-  const isPinDrop = false;
+  const isPinDrop = data.folder.title == "pinDrop" ? true : false;
 
   const onSubmit = async (inputs) => {
+    setAdding(() => true);
     await handleCreateFolder(inputs);
+    setAdding(() => false);
     setOpen(() => false);
   };
 
   const onSubmitFile = async (inputs) => {
+    setUploading(() => true);
     await handleUploadFile(inputs.file[0]);
+    setUploading(() => false);
     setOpenFile(() => false);
   };
 
@@ -63,19 +71,27 @@ export default function Menu({ data, handleCreateFolder, handleUploadFile }) {
               </DialogTrigger>
               <DialogContent>
                 <form method="POST" onSubmit={handleSubmit(onSubmit)}>
-                  <label for="title">Folder Name</label>
+                  <label for="title">
+                    Folder Name
+                    {adding && <LoadingSpinner className="ml-2 inline" />}
+                  </label>
                   <Input
                     id="title"
                     type="text"
                     name="title"
                     placeholder="title"
-                    minLength={5}
-                    maxLength={20}
+                    minLength={1}
+                    maxLength={30}
                     {...register("title")}
                     required
+                    className="my-3"
+                    disabled={adding}
                   ></Input>
+
                   <DialogFooter>
-                    <Button type="submit">Add folder</Button>
+                    <Button disabled={adding} type="submit">
+                      Add folder
+                    </Button>
                   </DialogFooter>
                 </form>
               </DialogContent>
@@ -84,21 +100,28 @@ export default function Menu({ data, handleCreateFolder, handleUploadFile }) {
           <Dialog open={openFile} onOpenChange={setOpenFile}>
             <DialogTrigger asChild>
               <Button variant="outline" className="bg-sky-400">
-                {isPinDrop ? "Drop" : "Add File"}
+                {isPinDrop ? "Push File" : "Add File"}
               </Button>
             </DialogTrigger>
             <DialogContent>
               <form method="POST" onSubmit={handleSubmitFile(onSubmitFile)}>
-                <label for="title">Select a file</label>
+                <label for="file">
+                  Select a file
+                  {uploading && <LoadingSpinner className="ml-2 inline" />}
+                </label>
                 <Input
                   id="file"
                   type="file"
                   name="file"
                   {...registerFile("file")}
                   required
+                  className="my-3"
+                  disabled={uploading}
                 ></Input>
                 <DialogFooter>
-                  <Button type="submit">Add selected file</Button>
+                  <Button type="submit" disabled={uploading}>
+                    Add selected file
+                  </Button>
                 </DialogFooter>
               </form>
             </DialogContent>

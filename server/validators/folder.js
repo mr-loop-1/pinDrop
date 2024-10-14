@@ -2,10 +2,10 @@ const { body, param, validationResult } = require("express-validator");
 
 exports.createFolder = [
   body("title")
-    .isAlpha()
-    .withMessage("Title must only contain alphbets")
+    .isAlphanumeric()
+    .withMessage("Name must only contain alphanumeric (no spaces)")
     .isLength({ min: 1, max: 20 })
-    .withMessage("Title must be between 1 and 20 characters"),
+    .withMessage("Name must be between 1 and 30 characters"),
 
   // param("folderId") // this is parent folder remember
   //   .isAlphanumeric()
@@ -15,7 +15,7 @@ exports.createFolder = [
     const errors = validationResult(req);
     console.log("🚀 ~ errors:", errors);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ error: errors.array()[0].msg });
     }
     next();
   },
@@ -30,7 +30,7 @@ exports.getFolder = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ error: errors.array()[0].msg });
     }
     next();
   },

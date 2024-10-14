@@ -23,7 +23,7 @@ const AuthGuard = () => {
 
             // const user = await getUser();
             // console.log("🚀 ~ user:", user);
-            // if (!user || !user.id) {
+            // if (!user || !user.ulid) {
             //   setValidUser(false);
             // }
             // if (user !== localUser) {
@@ -32,7 +32,6 @@ const AuthGuard = () => {
             // }
           } else {
             const user = await getUser();
-            console.log("🚀 ~ user:", user);
             localStorage.setItem("user", JSON.stringify(user));
             dispatch(fillUser(user));
             setValidUser(() => true);

@@ -29,7 +29,6 @@ exports.getFolder = async (inputs) => {
 };
 
 exports.createFolder = async (inputs) => {
-  console.log("🚀 ~ exports.createFolder= ~ inputs:", inputs);
   const pinata = inputs.pinata;
   let folderGroup, parent;
 
@@ -88,7 +87,6 @@ exports.deleteFolder = async (inputs) => {
 
     await query.commit();
   } catch (error) {
-    console.log("🚀 ~ exports.deleteFolder ~ error:", error);
     await query.rollback();
     throw new Error(error.message);
   }

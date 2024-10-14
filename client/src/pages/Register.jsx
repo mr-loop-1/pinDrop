@@ -26,7 +26,7 @@ export default function Register() {
 
   const onSubmit = async (data) => {
     const auth = {
-      username: data.username,
+      // username: data.username,
       email: data.email,
       password: data.password,
       pinataJwt: data.jwt,
@@ -43,7 +43,7 @@ export default function Register() {
       localStorage.setItem("user", JSON.stringify(result.data.user));
       navigate("/");
     } catch (error) {
-      showToast(toast, error.message);
+      showToast(toast, error?.response?.data?.error || error.message);
     }
   };
   return (
@@ -62,15 +62,13 @@ export default function Register() {
             id="email"
             type="email"
             name="email"
-            minLength={5}
-            maxLength={20}
             placeholder="email"
             className="mt-2"
             {...register("email")}
             required
           />
 
-          <label className="mt-5 uppercase text-sm font-semibold">
+          {/* <label className="mt-5 uppercase text-sm font-semibold">
             Username*
           </label>
           <Input
@@ -83,7 +81,7 @@ export default function Register() {
             className="mt-2"
             {...register("username")}
             required
-          />
+          /> */}
 
           <label className="mt-5 uppercase text-sm font-semibold">
             password*
@@ -92,7 +90,7 @@ export default function Register() {
             id="password"
             type="password"
             name="password"
-            minLength={5}
+            minLength={1}
             maxLength={50}
             placeholder="password"
             className="mt-2"

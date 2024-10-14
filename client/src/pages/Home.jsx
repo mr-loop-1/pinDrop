@@ -23,10 +23,26 @@ function Home() {
 
   const showToast = (toast, msg) => {
     toast({
+      className:
+        "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4",
       variant: "destructive",
       title: "Some Error Occured",
       description: msg,
       action: <ToastAction altText="Close">Close</ToastAction>,
+    });
+  };
+
+  const showGoodToast = (toast, msg) => {
+    toast({
+      className:
+        "bg-lime-400 top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4",
+      variant: "outline",
+      description: msg,
+      action: (
+        <ToastAction className="bg-white" altText="Close">
+          Close
+        </ToastAction>
+      ),
     });
   };
 
@@ -42,7 +58,7 @@ function Home() {
         setData(() => response.data);
         setLoading(() => false);
       } catch (error) {
-        showToast(toast, error.message);
+        showToast(toast, error?.response?.data?.error || error.message);
       }
     })();
   }, [refetch, location.pathname]);
@@ -58,9 +74,10 @@ function Home() {
       if (response.status != 200) {
         return showToast(toast, response.data.error || response.data.message);
       }
+      showGoodToast(toast, "Folder created success");
       toggleRefetch(() => (refetch ? false : true));
     } catch (error) {
-      showToast(toast, error.message);
+      showToast(toast, error?.response?.data?.error || error.message);
     }
   };
   const handleUploadFile = async (input) => {
@@ -73,13 +90,13 @@ function Home() {
         file: input,
         folderId,
       });
-      console.log("🚀 ~ handleUploadFile ~ response:", response);
       if (response.status != 200) {
         return showToast(toast, response.data.error || response.data.message);
       }
+      showGoodToast(toast, "Upload File Success");
       toggleRefetch(() => (refetch ? false : true));
     } catch (error) {
-      showToast(toast, error.message);
+      showToast(toast, error?.response?.data?.error || error.message);
     }
   };
 
@@ -93,9 +110,10 @@ function Home() {
       if (response.status != 200) {
         return showToast(toast, response.data.error || response.data.message);
       }
+      showGoodToast(toast, "Delete File success");
       toggleRefetch(() => (refetch ? false : true));
     } catch (error) {
-      showToast(toast, error.message);
+      showToast(toast, error?.response?.data?.error || error.message);
     }
   };
   const handleDeleteFolder = async (inputs) => {
@@ -106,9 +124,10 @@ function Home() {
       if (response.status != 200) {
         return showToast(toast, response.data.error || response.data.message);
       }
+      showGoodToast(toast, "Delete Folder success");
       toggleRefetch(() => (refetch ? false : true));
     } catch (error) {
-      showToast(toast, error.message);
+      showToast(toast, error?.response?.data?.error || error.message);
     }
   };
 

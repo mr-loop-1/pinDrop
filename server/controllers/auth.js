@@ -14,13 +14,12 @@ exports.register = async (req, res) => {
     const userUlid = await userModel.createUser(inputs);
     const newUser = {
       ulid: userUlid,
-      username: inputs.username,
+      // username: inputs.username,
       email: inputs.email,
     };
     const token = jwtService.generateToken(newUser);
     return res.status(200).json({ user: trimUser(newUser), token });
   } catch (error) {
-    console.log("🚀 ~ exports.login= ~ err:", error);
     res.status(500).json({ error: `Register Error - ${error.message}` });
   }
 };
@@ -29,19 +28,21 @@ exports.login = async (req, res) => {
   try {
     const body = req.body;
     const user = await userModel.getUser(body);
+    if (!user) {
+      return res.status(404).json({ error: "Email not found" });
+    }
     if (!(await bcrypt.compare(body.password, user.password))) {
-      return res.status(401).json("Unauthorized - wrong password");
+      return res.status(401).json({ error: "Unauthorized - wrong password" });
     }
     const token = jwtService.generateToken(user);
     return res.status(200).json({ user: trimUser(user), token });
   } catch (error) {
-    console.log("🚀 ~ exports.login= ~ err:", error);
     res.status(500).json({ error: `Login Error - ${error.message}` });
   }
 };
 
 const trimUser = (user) => ({
   ulid: user.ulid,
-  username: user.username,
+  // username: user.username,
   email: user.email,
 });

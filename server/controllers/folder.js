@@ -1,7 +1,6 @@
 const { folderModel } = require("../models");
 
 exports.getFolder = async (req, res) => {
-  console.log("🚀 ~ exports.getFolder= ~ req:", req.params);
   try {
     const data = await folderModel.getFolder({
       folderId: req.params.ulid,
@@ -14,7 +13,6 @@ exports.getFolder = async (req, res) => {
       folder: trimFolder(data.folder),
     });
   } catch (error) {
-    console.log("🚀 ~ exports.login= ~ err:", error);
     res.status(500).json({ error: `Getting Error - ${error.message}` });
   }
 };
@@ -30,7 +28,6 @@ exports.createFolder = async (req, res) => {
     });
     res.status(200).json({ message: "SUCCESS_CREATE_FOLDER" });
   } catch (error) {
-    console.log("🚀 ~ exports.login= ~ err:", error);
     res.status(500).json({ error: `Creating Error - ${error.message}` });
   }
 };
@@ -44,7 +41,6 @@ exports.deleteFolder = async (req, res) => {
     });
     res.status(200).json({ message: "DELETE_FOLDER_SUCCESS" });
   } catch (error) {
-    console.log("🚀 ~ exports.login= ~ err:", error);
     res.status(500).json({ error: `Deleting folder Error - ${error.message}` });
   }
 };

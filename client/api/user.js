@@ -15,8 +15,8 @@ export const getUser = async () => {
   }
 
   const data = {
-    id: response.data.user.ulid,
-    username: response.data.user.username,
+    ulid: response.data.user.ulid,
+    // username: response.data.user.username,
     email: response.data.user.email,
   };
   return data;

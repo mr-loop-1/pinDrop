@@ -6,6 +6,6 @@ exports.updateUser = (req, res) => {};
 
 const trimUser = (user) => ({
   ulid: user.ulid,
-  username: user.username,
+  // username: user.username,
   email: user.email,
 });
