@@ -14,12 +14,12 @@ export const registerUser = async (inputs) => {
 };
 
 export const pingServer = async () => {
-  //   const response = await axios.get(`${API_URL}`);
+  const response = await axios.get(`${API_URL}`);
 
-  //   if (response.status != 200) {
-  //     return;
-  //   }
-  const response = { status: 200 };
+  if (response.status != 200) {
+    return;
+  }
+  //   const response = { status: 200 };
 
   return response.status;
 };

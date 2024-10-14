@@ -7,12 +7,13 @@ exports.createFolder = [
     .isLength({ min: 1, max: 20 })
     .withMessage("Title must be between 1 and 20 characters"),
 
-  param("folderId") // this is parent folder remember
-    .isAlphanumeric()
-    .withMessage("Folder ulid must be alphanumeric"),
+  // param("folderId") // this is parent folder remember
+  //   .isAlphanumeric()
+  //   .withMessage("Folder ulid must be alphanumeric"),
 
   (req, res, next) => {
     const errors = validationResult(req);
+    console.log("🚀 ~ errors:", errors);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
@@ -21,10 +22,10 @@ exports.createFolder = [
 ];
 
 exports.getFolder = [
-  param("folderId")
-    .isAlphanumeric()
-    .withMessage("Folder ulid must be alphanumeric")
-    .optional(),
+  // param("folderId")
+  //   .isAlphanumeric()
+  //   .withMessage("Folder ulid must be alphanumeric")
+  //   .optional(),
 
   (req, res, next) => {
     const errors = validationResult(req);

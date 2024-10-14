@@ -7,7 +7,7 @@ import { useToast } from "@/components/hooks/use-toast";
 // import Menu from "@/components/menu/Menu";
 import { Card } from "@/components/ui/card";
 import Header from "@/components/Header";
-import { getFolder } from "api/folder";
+import { createFolder, getFolder } from "api/folder";
 import List from "@/components/list/List";
 import Menu from "@/components/menu/Menu";
 
@@ -48,19 +48,21 @@ function Home() {
     })();
   }, [refetch, location.pathname]);
 
-  const addFolder = async (inputs) => {
-    // try {
-    //   const response = await createFolder(folderId, inputs);
-    //   if (response.status != 200) {
-    //     return showToast(toast, response.data.error || response.data.message);
-    //   }
-    //   setLoading(() => true);
-    //   toggleRefetch(() => (refetch ? false : true));
-    // } catch (error) {
-    //   showToast(toast, error.message);
-    // }
+  const handleCreateFolder = async (inputs) => {
+    try {
+      const folderId = location.pathname.slice(1);
+      const response = await createFolder({
+        folderId,
+        title: inputs.title,
+      });
+      if (response.status != 200) {
+        return showToast(toast, response.data.error || response.data.message);
+      }
+      toggleRefetch(() => (refetch ? false : true));
+    } catch (error) {
+      showToast(toast, error.message);
+    }
   };
-  const createFolder = (inputs) => {};
   const uploadFile = (inputs) => {};
 
   const downloadFile = (inputs) => {};
@@ -72,7 +74,7 @@ function Home() {
   ) : (
     <Card className="mx-6 mt-6 pt-6 px-6 h-screen md:mx-14 lg:mx-auto max-auto lg:max-w-2xl">
       <Header user={user} />
-      <Menu data={data} />
+      <Menu data={data} handleCreateFolder={handleCreateFolder} />
       <List
         data={data}
         downloadFile={downloadFile}

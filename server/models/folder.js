@@ -1,3 +1,4 @@
+const { ulid } = require("ulid");
 const { knex } = require("../database");
 
 exports.getFolder = async (inputs) => {
@@ -40,7 +41,7 @@ exports.createFolder = async (inputs) => {
     await knex("folders").insert({
       ulid: ulid(),
       title: inputs.title,
-      userId: inputs.user.id,
+      userId: inputs.user.ulid,
       groupId: folderGroup.id,
       parentId: inputs.folderId,
     });
