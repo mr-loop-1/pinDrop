@@ -47,8 +47,10 @@ export default function Menu({ data, handleCreateFolder, handleUploadFile }) {
               onClick={() => {
                 navigate(`/${data.folder.parentId}`);
               }}
+              className="hover:bg-slate-200 flex align-middle px-2 rounded-md py-1"
             >
-              icon+ back
+              <img src="/back.svg" className="w-6 inline mr-2" />
+              back
             </button>
           )}
         </div>
