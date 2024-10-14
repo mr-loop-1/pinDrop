@@ -1,6 +1,58 @@
+const { default: axios } = require("axios");
 const { knex } = require("../database");
 
-exports.downloadFile = (req, res) => {};
+exports.downloadFile = async (req, res) => {
+  try {
+    const pinata = req.pinata;
+    const fileCid = req.params.fileCid;
+
+    const signedUrl = await pinata.gateways.createSignedURL({
+      cid: fileCid,
+      expires: 120,
+    });
+    // const fileUrl = `https://${req.user.gateway}/files/${fileCid}`;
+    // const response = await axios({
+    //   url: fileUrl,
+    //   method: "GET",
+    //   responseType: "blob",
+    // });
+
+    // // const file = await pinata.gateways.get(fileCid);
+    // // console.log("🚀 ~ exports.downloadFile= ~ file:", file.data);
+    // console.log("🚀 ~ exports.downloadFile= ~ response:", response);
+
+    // res.set({
+    //   "Content-Disposition": "attachment",
+    //   // "Content-Type": file.contentType,
+    // });
+
+    res.status(200).json({ signedUrl });
+  } catch (error) {
+    res.status(500).json({ error: `Download file Error - ${error.message}` });
+  }
+};
+
+// exports.downloadFile = async (req, res) => {
+//   try {
+//     const fileCid = req.params.fileCid;
+//     const fileUrl = `https://${req.user.gateway}/files/${fileCid}`;
+//     const response = await axios({
+//       url: fileUrl,
+//       method: "GET",
+//       responseType: "stream",
+//     });
+//     // console.log("🚀 ~ exports.downloadFile= ~ response:", response);
+
+//     res.set({
+//       "Content-Disposition": "attachment",
+//       "Content-Type": "application/pdf",
+//     });
+
+//     return response.data.pipe(res);
+//   } catch (error) {
+//     res.status(500).json({ error: `Download file Error - ${error.message}` });
+//   }
+// };
 
 exports.uploadFile = async (req, res) => {
   try {
@@ -29,7 +81,6 @@ exports.uploadFile = async (req, res) => {
     await pinata.upload.file(file).group(folder.groupId);
     return res.status(200).json({ message: "File uploaded success" });
   } catch (error) {
-    console.log("🚀 ~ exports.login= ~ err:", error);
     res.status(500).json({ error: `File upload error - ${error.message}` });
   }
 };
@@ -38,11 +89,9 @@ exports.deleteFiles = async (req, res) => {
   try {
     const pinata = req.pinata;
     const fileId = req.params.fileId;
-    console.log("🚀 ~ exports.deleteFiles ~ fileId:", fileId);
     await pinata.files.delete([fileId]);
     res.status(200).json({ message: "DELETE_FILE_SUCCESS" });
   } catch (error) {
-    console.log("🚀 ~ exports.login= ~ err:", error);
     res.status(500).json({ error: `Deleting file Error - ${error.message}` });
   }
 };

@@ -6,6 +6,12 @@ const { fileValidator } = require("../validators");
 
 const router = express.Router();
 
+router.get(
+  "/:fileCid",
+  authMiddleware.authenticateToken,
+  fileController.downloadFile
+);
+
 router.post(
   "/upload",
   authMiddleware.authenticateToken,
@@ -20,11 +26,7 @@ router.post(
   // upload.single("file"),
   fileController.uploadFile
 );
-// router.post(
-//   "/:download",
-//   authMiddleware.authenticateToken,
-//   fileController.downloadFile
-// );
+
 router.delete(
   "/:fileId",
   authMiddleware.authenticateToken,

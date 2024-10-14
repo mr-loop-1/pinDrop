@@ -10,7 +10,7 @@ import Header from "@/components/Header";
 import { createFolder, deleteFolder, getFolder } from "api/folder";
 import List from "@/components/list/List";
 import Menu from "@/components/menu/Menu";
-import { deleteFile, uploadFile } from "api/file";
+import { deleteFile, downloadFile, uploadFile } from "api/file";
 
 function Home() {
   const { toast } = useToast();
@@ -100,7 +100,36 @@ function Home() {
     }
   };
 
-  const downloadFile = (inputs) => {};
+  const handleDownloadFile = async (inputs) => {
+    try {
+      const response = await downloadFile({
+        fileCid: inputs.cid,
+      });
+      if (response.status != 200) {
+        return showToast(toast, response.data.error || response.data.message);
+      }
+      // console.log(response);
+
+      window.open(response.data.signedUrl, "_blank");
+      // if (!(response.data instanceof Blob)) {
+      //   return showToast(toast, "Corrupted file");
+      // }
+
+      // const blob = new Blob([response.data], { type: "application/pdf" });
+      // const url = window.URL.createObjectURL(blob);
+      // const url = window.URL.createObjectURL(response.data);
+      // const link = document.createElement("a");
+      // link.href = url;
+      // link.setAttribute("download", inputs.name);
+      // document.body.appendChild(link);
+      // link.click();
+
+      // link.parentNode.removeChild(link);
+      // window.URL.revokeObjectURL(url);
+    } catch (error) {
+      showToast(toast, error?.response?.data?.error || error.message);
+    }
+  };
 
   const handleDeleteFile = async (inputs) => {
     try {
@@ -143,7 +172,7 @@ function Home() {
       />
       <List
         data={data}
-        downloadFile={downloadFile}
+        handleDownloadFile={handleDownloadFile}
         handleDeleteFile={handleDeleteFile}
         handleDeleteFolder={handleDeleteFolder}
       />

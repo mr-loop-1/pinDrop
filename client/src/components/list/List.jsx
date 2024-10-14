@@ -18,11 +18,9 @@ export default function List({
   handleDeleteFile,
   handleDeleteFolder,
 }) {
-  const [openFolder, setOpenFolder] = useState(false);
-  const [openFile, setOpenFile] = useState(false);
-
   const [deletingFolder, setDeletingFolder] = useState(false);
   const [deletingFile, setDeletingFile] = useState(false);
+  const [opening, setOpening] = useState(null);
 
   const onDeleteFolder = async (inputs) => {
     setDeletingFolder(() => true);
@@ -33,6 +31,11 @@ export default function List({
     setDeletingFile(() => true);
     await handleDeleteFile(inputs);
     setDeletingFile(() => false);
+  };
+  const onDownload = async (inputs) => {
+    setOpening(() => inputs.cid);
+    await handleDownloadFile(inputs);
+    setOpening(() => null);
   };
 
   return (
@@ -101,10 +104,20 @@ export default function List({
                   <TableCell className="w-full">{file.name}</TableCell>
                 </span>
                 <span>
-                  <TableCell className="w-fit text-right">
-                    <img src="/download.svg" className="w-5" />
+                  <TableCell className="w-fit">
+                    {opening == file.cid ? (
+                      <span className="text-lime-600">opening...</span>
+                    ) : (
+                      <img
+                        onClick={() =>
+                          onDownload({ cid: file.cid, name: file.name })
+                        }
+                        src="/download.svg"
+                        className="w-5  cursor-pointer"
+                      />
+                    )}
                   </TableCell>
-                  <TableCell className="w-fit text-right hover:underline cursor-pointer">
+                  <TableCell className="w-fit cursor-pointer">
                     <Dialog>
                       <DialogTrigger asChild>
                         <img src="/delete.svg" className="w-5" />

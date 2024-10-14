@@ -118,6 +118,10 @@ export default function Menu({ data, handleCreateFolder, handleUploadFile }) {
                   className="my-3"
                   disabled={uploading}
                 ></Input>
+                <Label className="inlin">
+                  jpeg, jpg, png, svg, webp, gif, mp4, pdf, doc, docx, txt,
+                  text, md, zip, js, jsx, csv
+                </Label>
                 <DialogFooter>
                   <Button type="submit" disabled={uploading}>
                     Add selected file

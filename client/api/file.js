@@ -22,3 +22,13 @@ export const uploadFile = async (inputs) => {
   });
   return response;
 };
+
+export const downloadFile = async (inputs) => {
+  const jwt = localStorage.getItem("token");
+  const response = await axios.get(`${API_URL}/file/${inputs.fileCid}`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+  return response;
+};

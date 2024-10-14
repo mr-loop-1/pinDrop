@@ -20,6 +20,9 @@ function App() {
           <Route path="/:folderId" element={<Home />} />
         </Route>
       </Routes>
+      {/* <div className="fixed bottom-0 z-10 left-1/2 transform -translate-x-1/2 bg-gray-300 text-black px-2">
+        made by abdul samad
+      </div> */}
     </Router>
   );
 }
