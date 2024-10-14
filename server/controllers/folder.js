@@ -16,7 +16,7 @@ exports.getFolder = async (req, res) => {
     });
   } catch (error) {
     console.log("🚀 ~ exports.login= ~ err:", error);
-    res.status(500).json({ error: `Login Error - ${error.message}` });
+    res.status(500).json({ error: `Getting Error - ${error.message}` });
   }
 };
 
@@ -26,9 +26,13 @@ exports.createFolder = async (req, res) => {
       title: req.body.title,
       folderId: req.params.ulid,
       user: req.user,
+      pinata: req.pinata,
     });
     res.status(200).json({ message: "SUCCESS_CREATE_FOLDER" });
-  } catch (error) {}
+  } catch (error) {
+    console.log("🚀 ~ exports.login= ~ err:", error);
+    res.status(500).json({ error: `Creating Error - ${error.message}` });
+  }
 };
 
 exports.deleteFolder = async (req, res) => {
@@ -36,9 +40,13 @@ exports.deleteFolder = async (req, res) => {
     await folderModel.deleteFolder({
       folderId: req.params.ulid,
       user: req.user,
+      pinata: req.pinata,
     });
     res.status(200).json({ message: "DELETE_FOLDER_SUCCESS" });
-  } catch (error) {}
+  } catch (error) {
+    console.log("🚀 ~ exports.login= ~ err:", error);
+    res.status(500).json({ error: `Deleting Error - ${error.message}` });
+  }
 };
 
 const trimFolders = (folders) =>

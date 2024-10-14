@@ -32,7 +32,6 @@ exports.createUser = async (inputs) => {
       name: config.rootName,
       isPublic: true,
     });
-    console.log("🚀 ~ exports.createUser= ~ rootGroup:", rootGroup);
 
     const rootId = ulid();
 
@@ -41,14 +40,12 @@ exports.createUser = async (inputs) => {
       title: config.rootName,
       userId: userId,
       groupId: rootGroup.id,
-      // parentId: ,
     });
 
     pinDropGroup = await pinata.groups.create({
       name: config.pinDropName,
       isPublic: true,
     });
-    console.log("🚀 ~ exports.createUser= ~ pinDropGroup:", pinDropGroup);
 
     await query("folders").insert({
       ulid: ulid(),
@@ -58,11 +55,11 @@ exports.createUser = async (inputs) => {
       parentId: rootId,
     });
 
-    (await query).commit();
+    await query.commit();
 
     return userId;
   } catch (err) {
-    (await query).rollback();
+    await query.rollback();
     if (rootGroup) {
       await pinata.groups.delete({
         groupId: rootGroup.id,

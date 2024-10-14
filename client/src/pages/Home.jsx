@@ -60,9 +60,7 @@ function Home() {
     //   showToast(toast, error.message);
     // }
   };
-
   const createFolder = (inputs) => {};
-
   const uploadFile = (inputs) => {};
 
   const downloadFile = (inputs) => {};

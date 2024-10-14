@@ -24,13 +24,18 @@ export default function Menu({ data, createFolder, uploadFile }) {
   return (
     <div className="my-4">
       <div className="my-4 flex justify-between">
-        <button
-          onClick={() => {
-            navigate(`/${data.folder.parentId}`);
-          }}
-        >
-          icon+ back
-        </button>
+        <div>
+          {!isRoot && (
+            <button
+              disabled={isRoot}
+              onClick={() => {
+                navigate(`/${data.folder.parentId}`);
+              }}
+            >
+              icon+ back
+            </button>
+          )}
+        </div>
         <div>
           {!isPinDrop && (
             <Dialog open={open} onOpenChange={setOpen}>

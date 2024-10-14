@@ -43,7 +43,7 @@ export default function List({ data, downloadFile, deleteFile, deleteFolder }) {
                 <span>
                   <TableCell className="w-fit text-right">Down</TableCell>
                   <TableCell
-                    onClick={() => deleteFolder(folder.id)}
+                    onClick={() => deleteFolder(file.id)}
                     className="w-fit text-right"
                   >
                     Del

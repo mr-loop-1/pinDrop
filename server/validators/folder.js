@@ -7,7 +7,7 @@ exports.createFolder = [
     .isLength({ min: 1, max: 20 })
     .withMessage("Title must be between 1 and 20 characters"),
 
-  param("folderId")
+  param("folderId") // this is parent folder remember
     .isAlphanumeric()
     .withMessage("Folder ulid must be alphanumeric"),
 

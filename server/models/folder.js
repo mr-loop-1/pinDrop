@@ -1,11 +1,9 @@
 const { knex } = require("../database");
 
 exports.getFolder = async (inputs) => {
-  console.log("🚀 ~ exports.getFolder= ~ inputs:", inputs);
   const pinata = inputs.pinata;
   let folder;
   if (!inputs?.folderId) {
-    console.log("🚀 ~ exports.getFolder= ~ folderId:");
     folder = await knex("folders")
       .where("userId", inputs.user.ulid)
       .whereNull("parentId")
@@ -31,7 +29,6 @@ exports.getFolder = async (inputs) => {
 
 exports.createFolder = async (inputs) => {
   const pinata = inputs.pinata;
-  const query = await knex.transaction();
   let folderGroup;
 
   try {
@@ -40,7 +37,7 @@ exports.createFolder = async (inputs) => {
       isPublic: true,
     });
 
-    await query("folders").insert({
+    await knex("folders").insert({
       ulid: ulid(),
       title: inputs.title,
       userId: inputs.user.id,
@@ -53,8 +50,34 @@ exports.createFolder = async (inputs) => {
         groupId: folderGroup.id,
       });
     }
-    throw new Error("Error creating folder");
+    throw new Error(error.message);
   }
 };
 
-exports.deleteFolder = async (inputs) => {};
+exports.deleteFolder = async (inputs) => {
+  const pinata = inputs.pinata;
+  const query = await knex.transaction();
+  let folderGroup;
+
+  try {
+    await query("folders")
+      .where("ulid", inputs.folderId)
+      .where("userId", inputs.user.ulid)
+      .del();
+
+    folderGroup = await pinata.groups.create({
+      name: ulid(),
+      isPublic: true,
+    });
+
+    await query.commit();
+  } catch (error) {
+    await query.rollback();
+    if (folderGroup) {
+      await pinata.groups.delete({
+        groupId: folderGroup.id,
+      });
+    }
+    throw new Error(error.message);
+  }
+};
