@@ -8,7 +8,6 @@ exports.getFolder = async (req, res) => {
       user: req.user,
       pinata: req.pinata,
     });
-    console.log("🚀 ~ exports.getFolder= ~ data:", data);
     res.status(200).json({
       folders: trimFolders(data.folders),
       files: trimFiles(data.files),

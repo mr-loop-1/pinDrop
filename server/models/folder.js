@@ -29,8 +29,16 @@ exports.getFolder = async (inputs) => {
 };
 
 exports.createFolder = async (inputs) => {
+  console.log("🚀 ~ exports.createFolder= ~ inputs:", inputs);
   const pinata = inputs.pinata;
-  let folderGroup;
+  let folderGroup, parent;
+
+  if (!inputs?.folderId) {
+    parent = await knex("folders")
+      .where("userId", inputs.user.ulid)
+      .whereNull("parentId")
+      .first();
+  }
 
   try {
     folderGroup = await pinata.groups.create({
@@ -43,7 +51,7 @@ exports.createFolder = async (inputs) => {
       title: inputs.title,
       userId: inputs.user.ulid,
       groupId: folderGroup.id,
-      parentId: inputs.folderId,
+      parentId: inputs?.folderId || parent.ulid,
     });
   } catch (error) {
     if (folderGroup) {
@@ -58,27 +66,26 @@ exports.createFolder = async (inputs) => {
 exports.deleteFolder = async (inputs) => {
   const pinata = inputs.pinata;
   const query = await knex.transaction();
-  let folderGroup;
 
   try {
+    const folder = await knex("folders")
+      .where("ulid", inputs.folderId)
+      .where("userId", inputs.user.ulid)
+      .first();
+
     await query("folders")
       .where("ulid", inputs.folderId)
       .where("userId", inputs.user.ulid)
       .del();
 
-    folderGroup = await pinata.groups.create({
-      name: ulid(),
-      isPublic: true,
+    await pinata.groups.delete({
+      groupId: folder.groupId,
     });
 
     await query.commit();
   } catch (error) {
+    console.log("🚀 ~ exports.deleteFolder ~ error:", error);
     await query.rollback();
-    if (folderGroup) {
-      await pinata.groups.delete({
-        groupId: folderGroup.id,
-      });
-    }
     throw new Error(error.message);
   }
 };

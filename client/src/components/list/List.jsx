@@ -2,7 +2,12 @@ import { Link } from "react-router-dom";
 import { Table, TableBody, TableCell, TableRow } from "../ui/table";
 import clsx from "clsx";
 
-export default function List({ data, downloadFile, deleteFile, deleteFolder }) {
+export default function List({
+  data,
+  downloadFile,
+  handleDeleteFile,
+  handleDeleteFolder,
+}) {
   console.log("🚀 ~ List ~ data:", data);
   return (
     <div>
@@ -22,10 +27,13 @@ export default function List({ data, downloadFile, deleteFile, deleteFolder }) {
                   <TableCell className="w-full">{folder.title}</TableCell>
                 </Link>
                 <span>
-                  <TableCell className="w-fit text-right"></TableCell>
+                  {/* <TableCell className="w-fit text-right"></TableCell> */}
                   <TableCell
-                    onClick={() => deleteFolder(folder.id)}
-                    className="w-fit text-right"
+                    onClick={() => handleDeleteFolder({ id: folder.id })}
+                    className={clsx(
+                      folder.title == "pinDrop" && "hidden",
+                      "w-fit text-right hover:underline cursor-pointer"
+                    )}
                   >
                     Del
                   </TableCell>
@@ -43,8 +51,8 @@ export default function List({ data, downloadFile, deleteFile, deleteFolder }) {
                 <span>
                   <TableCell className="w-fit text-right">Down</TableCell>
                   <TableCell
-                    onClick={() => deleteFolder(file.id)}
-                    className="w-fit text-right"
+                    onClick={() => handleDeleteFile(file.id)}
+                    className="w-fit text-right hover:underline"
                   >
                     Del
                   </TableCell>

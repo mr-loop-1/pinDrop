@@ -26,8 +26,15 @@ router.post(
   folderController.createFolder
 );
 
+router.post(
+  "",
+  authMiddleware.authenticateToken,
+  folderValidator.createFolder,
+  folderController.createFolder
+);
+
 router.delete(
-  ":ulid",
+  "/:ulid",
   authMiddleware.authenticateToken,
   folderValidator.deleteFolder,
   folderController.deleteFolder

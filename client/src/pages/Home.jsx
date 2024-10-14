@@ -7,7 +7,7 @@ import { useToast } from "@/components/hooks/use-toast";
 // import Menu from "@/components/menu/Menu";
 import { Card } from "@/components/ui/card";
 import Header from "@/components/Header";
-import { createFolder, getFolder } from "api/folder";
+import { createFolder, deleteFolder, getFolder } from "api/folder";
 import List from "@/components/list/List";
 import Menu from "@/components/menu/Menu";
 
@@ -34,9 +34,7 @@ function Home() {
       try {
         setLoading(() => true);
         const folderId = location.pathname.slice(1);
-        console.log("🚀 ~ folderId:", folderId);
         const response = await getFolder({ folderId });
-        console.log("🚀 ~ response:", response);
         if (response.status != 200) {
           return showToast(toast, response.data.error || response.data.message);
         }
@@ -49,12 +47,14 @@ function Home() {
   }, [refetch, location.pathname]);
 
   const handleCreateFolder = async (inputs) => {
+    console.log("🚀 ~ handleCreateFolder ~ inputs:", inputs);
     try {
       const folderId = location.pathname.slice(1);
       const response = await createFolder({
         folderId,
         title: inputs.title,
       });
+      console.log("🚀 ~ handleCreateFolder ~ response:", response);
       if (response.status != 200) {
         return showToast(toast, response.data.error || response.data.message);
       }
@@ -67,7 +67,19 @@ function Home() {
 
   const downloadFile = (inputs) => {};
   const deleteFile = (inputs) => {};
-  const deleteFolder = (inputs) => {};
+  const handleDeleteFolder = async (inputs) => {
+    try {
+      const response = await deleteFolder({
+        folderId: inputs.id,
+      });
+      if (response.status != 200) {
+        return showToast(toast, response.data.error || response.data.message);
+      }
+      toggleRefetch(() => (refetch ? false : true));
+    } catch (error) {
+      showToast(toast, error.message);
+    }
+  };
 
   return loading ? (
     <Loading />
@@ -79,7 +91,7 @@ function Home() {
         data={data}
         downloadFile={downloadFile}
         deleteFile={deleteFile}
-        deleteFolder={deleteFolder}
+        handleDeleteFolder={handleDeleteFolder}
       />
     </Card>
   );
