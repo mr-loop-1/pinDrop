@@ -35,4 +35,15 @@ exports.uploadFile = async (req, res) => {
   }
 };
 
-exports.deleteFiles = (req, res) => {};
+exports.deleteFiles = async (req, res) => {
+  try {
+    const pinata = req.pinata;
+    const fileId = req.params.fileId;
+    console.log("🚀 ~ exports.deleteFiles ~ fileId:", fileId);
+    await pinata.files.delete([fileId]);
+    res.status(200).json({ message: "DELETE_FILE_SUCCESS" });
+  } catch (error) {
+    console.log("🚀 ~ exports.login= ~ err:", error);
+    res.status(500).json({ error: `Deleting file Error - ${error.message}` });
+  }
+};

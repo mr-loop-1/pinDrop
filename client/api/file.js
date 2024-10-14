@@ -2,8 +2,9 @@ import axios from "axios";
 const API_URL = import.meta.env.VITE_SERVER_URL;
 
 export const deleteFile = async (inputs) => {
+  console.log("🚀 ~ deleteFile ~ inputs.fileId:", inputs.fileId);
   const jwt = localStorage.getItem("token");
-  const response = await axios.delete(`${API_URL}/file/${inputs.folderId}`, {
+  const response = await axios.delete(`${API_URL}/file/${inputs.fileId}`, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },

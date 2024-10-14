@@ -10,7 +10,7 @@ import Header from "@/components/Header";
 import { createFolder, deleteFolder, getFolder } from "api/folder";
 import List from "@/components/list/List";
 import Menu from "@/components/menu/Menu";
-import { uploadFile } from "api/file";
+import { deleteFile, uploadFile } from "api/file";
 
 function Home() {
   const { toast } = useToast();
@@ -84,7 +84,7 @@ function Home() {
 
   const downloadFile = (inputs) => {};
 
-  const deleteFile = async (inputs) => {
+  const handleDeleteFile = async (inputs) => {
     try {
       const response = await deleteFile({
         fileId: inputs.id,
@@ -124,7 +124,7 @@ function Home() {
       <List
         data={data}
         downloadFile={downloadFile}
-        deleteFile={deleteFile}
+        handleDeleteFile={handleDeleteFile}
         handleDeleteFolder={handleDeleteFolder}
       />
     </Card>

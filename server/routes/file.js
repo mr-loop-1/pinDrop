@@ -17,11 +17,11 @@ router.post(
 //   authMiddleware.authenticateToken,
 //   fileController.downloadFile
 // );
-// router.delete(
-//   "/:id",
-//   authMiddleware.authenticateToken,
-//   fileValidator.deleteFiles,
-//   fileController.deleteFiles
-// );
+router.delete(
+  "/:fileId",
+  authMiddleware.authenticateToken,
+  // fileValidator.deleteFile,
+  fileController.deleteFiles
+);
 
 module.exports = router;

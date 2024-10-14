@@ -1,12 +1,6 @@
 const { body, validationResult } = require("express-validator");
 
 exports.uploadFile = [
-  // body("folderId")
-  //   .isString()
-  //   .withMessage("Filename must be a string")
-  //   .isLength({ min: 1, max: 50 })
-  //   .withMessage("Filename must be between 1 and 50 char"),
-
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

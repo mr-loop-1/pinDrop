@@ -44,7 +44,7 @@ exports.deleteFolder = async (req, res) => {
     res.status(200).json({ message: "DELETE_FOLDER_SUCCESS" });
   } catch (error) {
     console.log("🚀 ~ exports.login= ~ err:", error);
-    res.status(500).json({ error: `Deleting Error - ${error.message}` });
+    res.status(500).json({ error: `Deleting folder Error - ${error.message}` });
   }
 };
 
@@ -56,7 +56,8 @@ const trimFolders = (folders) =>
 
 const trimFiles = (files) =>
   files.map((file) => ({
-    id: file.cid,
+    id: file.id,
+    cid: file.cid,
     name: file.name,
     type: "json",
   }));

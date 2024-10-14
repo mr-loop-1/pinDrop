@@ -51,7 +51,7 @@ export default function List({
                 <span>
                   <TableCell className="w-fit text-right">Down</TableCell>
                   <TableCell
-                    onClick={() => handleDeleteFile(file.id)}
+                    onClick={() => handleDeleteFile({ id: file.id })}
                     className="w-fit text-right hover:underline cursor-pointer"
                   >
                     Del
